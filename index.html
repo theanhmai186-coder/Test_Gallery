@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Anh — A Spiritual Art Journey</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Animation Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #050a10;
+      --surface: #0a111a;
+      --accent: #c5a358; /* Luxury Gold */
+      --text: #e0e0e0;
+      --muted: #8892b0;
+      --glass: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.1);
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Montserrat', sans-serif;
+    }
+
+/* 1. APPLY TO THE ENTIRE PAGE */
+html {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-accent) var(--bg);
+}
+
+/* 2. APPLY TO CHROME, SAFARI, EDGE */
+/* The background of the entire scrollbar path */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+/* The track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+  background: var(--bg) !important;
+}
+
+/* The draggable bar (thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-accent) !important;
+  border-radius: 10px;
+  /* This border creates a "padding" effect so the bar looks slim and high-end */
+  border: 3px solid var(--bg) !important;
+}
+
+/* Hover state for the bar */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted) !important;
+}
+
+/* 3. ENSURE MODALS AND RADIUS ARE COVERED */
+::-webkit-scrollbar-corner {
+  background: var(--bg);
+}
+
+   html { scrollbar-width: thin; scrollbar-color: var(--secondary-accent) var(--bg); }
+    ::-webkit-scrollbar { width: 12px; }
+    ::-webkit-scrollbar-track { background: var(--bg) !important; }
+    ::-webkit-scrollbar-thumb { 
+        background-color: var(--secondary-accent) !important; 
+        border-radius: 10px; 
+        border: 3px solid var(--bg) !important; 
+    }
+    ::-webkit-scrollbar-thumb:hover { background-color: var(--muted) !important; }
+    
+    [data-theme="light"] {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --accent: #9a7b31;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --glass: rgba(0, 0, 0, 0.03);
+      --border: rgba(0, 0, 0, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* Cinematic Background & Grain */
+    .bg-grain {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity: 0.05; pointer-events: none; z-index: 9999;
+    }
+
+    /* Custom Luxury Cursor */
+    #cursor {
+      position: fixed; width: 10px; height: 10px; background: var(--accent);
+      border-radius: 50%; pointer-events: none; z-index: 100000;
+      transition: transform 0.1s ease; mix-blend-mode: difference;
+    }
+    #cursor-follower {
+      position: fixed; width: 40px; height: 40px; border: 1px solid var(--accent);
+      border-radius: 50%; pointer-events: none; z-index: 100000;
+      transition: transform 0.15s ease, width 0.3s, height 0.3s;
+    }
+
+    /* Navbar */
+    .top-bar {
+      position: fixed; top: 0; left: 0; width: 100%; padding: 25px 50px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 1000; backdrop-filter: blur(10px); background: var(--glass);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 2px; font-weight: 300; }
+    .brand span { color: var(--accent); font-style: italic; }
+
+    .nav-actions { display: flex; gap: 20px; align-items: center; }
+
+    .nav-btn {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      padding: 8px 16px; border-radius: 2px; font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 2px; transition: 0.4s;
+    }
+    .nav-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    /* Hero Section */
+    .hero {
+      height: 70vh; display: flex; flex-direction: column; justify-content: center;
+      align-items: center; text-align: center; padding-top: 100px;
+    }
+    .hero h1 {
+      font-family: var(--font-serif); font-size: 5rem; font-weight: 300;
+      margin-bottom: 10px; opacity: 0; transform: translateY(30px);
+    }
+    .hero p {
+      font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); opacity: 0; transform: translateY(20px);
+    }
+
+    /* Gallery Grid */
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 100px 50px; }
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 80px;
+    }
+
+    .gallery-item {
+      position: relative; overflow: hidden; border-radius: 0px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-image-wrapper {
+      position: relative; overflow: hidden; aspect-ratio: 4/5;
+      background: #000;
+    }
+
+    .gallery-image-wrapper img {
+      width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: grayscale(0.5);
+    }
+
+    .gallery-item:hover img { transform: scale(1.08); filter: grayscale(0); }
+
+    .gallery-info {
+      padding: 30px 0; border-bottom: 1px solid var(--border);
+    }
+    .gallery-info h3 { font-family: var(--font-serif); font-size: 2rem; font-weight: 300; }
+    .gallery-info p { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; margin-top: 10px; }
+
+    /* Modal Styling */
+    .art-modal {
+      position: fixed; inset: 0; z-index: 10000; display: none; opacity: 0;
+      transition: 0.5s;
+    }
+    .art-modal.active { display: flex; opacity: 1; }
+    .art-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); }
+    
+    .art-modal-panel {
+      position: relative; width: 90vw; height: 85vh; margin: auto;
+      background: var(--surface); display: flex; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .modal-img-container { flex: 1.2; background: #000; }
+    .modal-img-container img { width: 100%; height: 100%; object-fit: contain; }
+    
+    .modal-text-container {
+      flex: 0.8; padding: 80px 60px; overflow-y: auto; position: relative;
+    }
+    .modal-text-container h2 { font-family: var(--font-serif); font-size: 3.5rem; margin-bottom: 30px; color: var(--accent); }
+    
+    .close-btn {
+      position: absolute; top: 30px; right: 30px; background: none; border: none;
+      color: var(--text); font-size: 1.5rem; z-index: 10;
+    }
+
+    /* Flipbook Specific Styling */
+    .iframe-container { width: 100%; height: 100%; background: #000; }
+
+    /* Footer */
+    footer {
+      padding: 100px 50px; text-align: center; border-top: 1px solid var(--border);
+      font-family: var(--font-serif);
+    }
+
+    @media(max-width: 900px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 3rem; }
+      .art-modal-panel { flex-direction: column; height: 95vh; }
+      .top-bar { padding: 15px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-follower"></div>
+  <div class="bg-grain"></div>
+  <div class="mesh-gradient"></div>
+
+  <nav class="top-bar">
+    <div class="brand">THE <span>ANH</span></div>
+    <div class="nav-actions">
+      <button id="langToggle" class="nav-btn"><span id="langText">EN</span></button>
+      <button id="themeToggle" class="nav-btn">Theme</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <p data-vi="Khám phá linh hồn nghệ thuật" data-en="Discover the Artistic Soul"></p>
+    <h1 data-vi="Bộ Sưu Tập Của Tôi" data-en="The Private Gallery"></h1>
+  </header>
+
+  <main class="wrap">
+    <div class="gallery-grid" id="galleryGrid">
+      
+      <!-- Flipbook -->
+      <div class="gallery-item" onclick="openBook()" data-reveal>
+        <div class="gallery-image-wrapper">
+          <img src="Cover.png" alt="Cover">
+        </div>
+        <div class="gallery-info">
+          <h3 data-vi="Sổ tay Hình Hoạ" data-en="Drawing Sketchbook"></h3>
+          <p data-vi="Tác phẩm lật trang kỹ thuật số (A4)" data-en="Digital Flipbook Experience (A4)"></p>
+        </div>
+      </div>
+
+      <!-- Alien Artwork -->
+      <div class="gallery-item art-item" data-reveal
+           data-vi-title="Tái sinh (Rebirth)" 
+           data-en-title="Rebirth"
+           data-vi-full="<p>Khi đọc đề bài là sử dụng màu lạnh để thể hiện những yếu tố và quy tắc trong nghệ thuật, tôi rất phân vân và không biết phải xử lí như thế nào. Bỗng tôi vô tình lướt thấy một tấm hình trong bộ phim Prometheus 2012 do Ridley Scott đạo diễn. Ngay khoảnh khắc ấy, một tia sáng loé lên trong đầu tôi và ý tưởng về một bức tranh về người ngoài hành tinh được ra đời - “Tái sinh”.</p></br>
+                         <p>“Chúng ta sẽ không biết mình có thể làm được những gì cho đến khi mình bắt tay vào thực hiện nó”. Thật vậy, khi đang chuẩn bị đồ để vẽ, tôi đã chần chừ và nghĩ “Làm sao mình có thể thể hiện được cảnh “sống lại”  của sinh vật ấy? Làm sao để mình có thể khiến cho người khác khi nhìn vào sẽ cảm nhận được sự rùng rợn, đáng sợ của sinh vật ấy?” Những câu hỏi nghi hoặc về khả năng bản thân luôn xuất hiện mỗi khi tôi bắt đầu vẽ những thứ mới mà tôi chưa từng thử. Tôi bắt đầu vẽ dù cho những nghi hoặc trong đầu vẫn còn hiện hữu. Mặc dù vậy, từng nét cọ của tôi vẫn mang theo sự tự tin, dứt khoát, sự kiên nhẫn, sự cảm nhận của tôi và cách tôi muốn mọi người cảm nhận khi nhìn vào bức tranh.</p></br>
+                         <p>Tôi đã dành cả 1 ngày để thực hiện bức tranh này và dù “kết quả về mặt điểm số” không được như ý muốn nhưng lần vẽ này là một trải nghiệm khó quên bởi lẽ “nếu tôi không dám thử thì tôi đã không biết mình có thể làm được những gì.”</p>"
+            data-en-full="<p> When I first read the assignment requiring the use of cool colors to demonstrate art elements and principles, I felt completely stumped and didn't know where to begin. Then, I happened to stumble upon an image from the 2012 movie Prometheus directed by Ridley Scott. At that very moment, a spark lit up in my mind, and the concept for an alien painting was born—titled “Rebirth.”</p></br>
+                          <p> “We never know what we are capable of until we actually try.” True enough, as I was setting up my art supplies, I hesitated, thinking: “How can I possibly capture the creature coming back to life? How can I make the viewer feel the sheer dread and eeriness of it?” Doubts about my own abilities always seem to creep in whenever I attempt something entirely new. Yet, I started painting despite those lingering uncertainties. Even so, each brushstroke carried confidence, precision, patience, and the exact emotions I wanted to convey to the audience.</p></br> 
+                          <p> I spent an entire day on this piece, and although the grade wasn't quite what I had hoped for, the process was an unforgettable experience. After all, “if I hadn't dared to try, I never would have known what I was capable of.”</p>">
+        <div class="gallery-image-wrapper">
+          <img src="Alien.jpg" alt="Rebirth">
+        </div>
+        <div class="gallery-info">
+          <h3 data-vi="Tái sinh" data-en="Rebirth"></h3>
+          <p data-vi="Acrylic trên giấy canson (20x15cm)" data-en="Acrylic on Canson Paper (20x15cm)"></p>
+        </div>
+      </div>
+
+      <!-- Lion Artwork -->
+      <div class="gallery-item art-item" data-reveal
+           data-vi-title="Dòng chảy gầm thét" 
+           data-en-title="The Roaring Current"
+           data-vi-full="<p>“Dòng chảy gầm thét” là bức tranh đầu tiên tôi vẽ của môn học “Cơ sở tạo hình”. Nếu xét riêng theo quan điểm cá nhân, đây là bức tranh “đẹp toàn diện nhất” mà tôi từng tạo ra.</p></br><p>Trước khi thật sự nghiêm túc theo đuổi con đường nghệ thuật, tôi đã bắt đầu với việc vẽ động vật như là một cách để làm quen trước khi vẽ con người. Sư tử không phải là động vật “yêu thích” của tôi bởi tôi không thể tả được lông bờm sư tử (vấn đề kĩ năng). Nhưng vào cái ngày giảng viên cho tôi đề bài, lúc ấy, tôi đang phát thảo một con sư tử và trùng hợp thay, con sư tử ấy lại phù hợp “một cách bất ngờ” với yêu cầu đề bài. Tôi phát thảo một cách hoàn chỉnh hơn và được giảng viên chấp nhận ý tưởng đó. </p></br><p>Về nhà, tôi vẽ thêm một bản phát thảo nữa trên máy tính của tôi để chắc chắn rằng mình sẽ không mắc những sai về bố cục và tỉ lệ. Sau khi đã dành hết 70% thời gian của bản thân để chuẩn bị ý tưởng, tôi mới bắt tay vào thực hiện nó. Từng đường nét thể hiện sự chắc chắn, kiên nhẫn, từng “cái chấm” như đang chuyển chuyển động, tạo nên khung cảnh sư tử dám đối đầu với một thế lực to lớn nào đó ngoài tự nhiên một cách uy nghiêm và dũng mãnh, đúng với danh xưng “Chúa tể muôn loài”. </p></br><p>Mọi người cùng nhìn vào một bức tranh nhưng mỗi người sẽ có cảm nhận của riêng mình về bức tranh ấy. Một tác phẩm không phải được coi là đẹp nhờ vào “những lời nhận xét có cánh” mà tác phẩm ấy đẹp khi mà nó thu hút người đọc thông qua cảm xúc và tâm hồn, gợi lên cho người đọc những thắc mắc, những suy nghĩ về ý nghĩa của tác phẩm. Để làm ra được một tác phẩm như vậy, sự chuẩn bị và việc lên ý tưởng là vô cùng quan trong và cần thiết. Nghệ sĩ hãy tạo cho mình thói quen chăm chút cho việc lên ý tưởng, dành đủ thời gian lên ý tưởng để tạo nên những tác phẩm không chỉ đẹp ở vẻ “bề ngoài” mà còn đẹp ở cả “bên trong”. </p>"
+            data-en-full="<p>“The Roaring Current” was the very first painting I created for my Foundations of Design course. Personally speaking, I consider it the most flawless piece I have ever produced to date.</p></br><p>Before I truly got serious about pursuing art, I started by drawing animals as a stepping stone before tackling human subjects. Lions were never my “favorite” simply because I struggled to render their manes (a skill issue at the time!). However, on the day the assignment was given, I happened to be sketching a lion. Coincidentally, that sketch fit the requirements “unexpectedly well.” I refined the sketch, and my instructor approved the concept.</p></br><p>When I got home, I created another digital draft to ensure I wouldn't make any mistakes with composition or proportion. I devoted 70% of my time just to preparing the concept before I even touched the final canvas. Every line showed certainty and patience; every single “dot” seemed to move, creating a scene where the lion—majestic and brave—dares to confront a massive natural force. It truly lived up to the title “King of Beasts.”</p></br><p>We may all look at the same painting, but each person will feel something different. A masterpiece isn't defined by “flowery praise”; it is beautiful because it captivates the viewer's soul and emotions, sparking curiosity and thought about its meaning. To create such a work, preparation and ideation are absolutely vital. Artists should make a habit of nurturing their ideas, spending enough time on them to create works that are beautiful not just on the “outside,” but on the “inside” as well.</p>">
+        <div class="gallery-image-wrapper">
+          <img src="Lion.jpg" alt="Lion">
+        </div>
+        <div class="gallery-info">
+          <h3 data-vi="Dòng chảy gầm thét" data-en="The Roaring Current"></h3>
+          <p data-vi="Acrylic trên giấy canson (20x15cm)" data-en="Acrylic on Canson Paper(20x15cm)"></p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- High-End Modal -->
+  <div id="artModal" class="art-modal">
+    <div class="art-modal-backdrop" onclick="closeAllModals()"></div>
+    <div class="art-modal-panel">
+      <button class="close-btn" onclick="closeAllModals()">✕</button>
+      <div class="modal-img-container" id="modalImgContainer"></div>
+      <div class="modal-text-container">
+        <h2 id="modalTitle"></h2>
+        <div id="modalDescription"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bookModal" class="art-modal">
+    <div class="art-modal-backdrop" onclick="closeAllModals()"></div>
+    <div class="art-modal-panel">
+      <button class="close-btn" onclick="closeAllModals()">✕</button>
+      <div class="iframe-container">
+          <iframe src="https://online.anyflip.com/tqsqx/tvul/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 THE ANH — TRANSCENDING ART</p>
+    <a href="https://forms.gle/RiXpPM83rgJoocwA6" target="_blank" style="color:var(--accent); font-size:0.8rem; letter-spacing:2px; text-decoration:none;">SURVEY THE EXPERIENCE</a>
+  </footer>
+
+  <script>
+    // Register GSAP Plugins
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    
+    document.addEventListener('mousemove', (e) => {
+      gsap.to(cursor, {x: e.clientX, y: e.clientY, duration: 0});
+      gsap.to(follower, {x: e.clientX - 15, y: e.clientY - 15, duration: 0.3});
+    });
+
+    // Gallery Revelations
+    gsap.to(".hero h1", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out" });
+    gsap.to(".hero p", { opacity: 1, y: 0, duration: 1.5, delay: 0.3, ease: "power4.out" });
+
+    document.querySelectorAll('[data-reveal]').forEach((item) => {
+      gsap.from(item, {
+        scrollTrigger: {
+          trigger: item,
+          start: "top 90%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+    });
+
+    // Language & Theme logic (Inherited & Refined)
+    let currentLang = localStorage.getItem('language') || 'vi';
+    function updateLanguage() {
+      document.querySelectorAll('[data-vi], [data-en]').forEach(el => {
+        el.innerHTML = currentLang === 'vi' ? el.getAttribute('data-vi') : el.getAttribute('data-en');
+      });
+      document.getElementById('langText').innerText = currentLang === 'vi' ? 'EN' : 'VI';
+      localStorage.setItem('language', currentLang);
+    }
+    document.getElementById('langToggle').onclick = () => { currentLang = currentLang === 'vi' ? 'en' : 'vi'; updateLanguage(); }
+
+    function openBook() {
+      document.getElementById('bookModal').classList.add('active');
+      gsap.from(".art-modal-panel", {scale: 0.9, opacity: 0, duration: 0.5});
+    }
+
+    document.querySelectorAll('.art-item').forEach(item => {
+      item.onclick = () => {
+        document.getElementById('modalTitle').innerText = item.getAttribute(currentLang === 'vi' ? 'data-vi-title' : 'data-en-title');
+        document.getElementById('modalDescription').innerHTML = item.getAttribute(currentLang === 'vi' ? 'data-vi-full' : 'data-en-full');
+        document.getElementById('modalImgContainer').innerHTML = item.querySelector('.gallery-image-wrapper').innerHTML;
+        document.getElementById('artModal').classList.add('active');
+        gsap.from(".art-modal-panel", {y: 50, opacity: 0, duration: 0.6});
+      }
+    });
+
+    function closeAllModals() {
+      document.querySelectorAll('.art-modal').forEach(m => m.classList.remove('active'));
+    }
+
+    // Protection Layers
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
+
+    // Theme Toggle
+    document.getElementById('themeToggle').onclick = () => {
+      const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    };
+
+    updateLanguage();
+  </script>
+</body>
+</html>
